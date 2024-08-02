@@ -1,58 +1,41 @@
-'use client';
-import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Form from '@components/Form';
+"use client";
 
-const EditPrompt = () => {
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+
+import Form from "@components/Form";
+
+const UpdatePrompt = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isClient, setIsClient] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [post, setPost] = useState({
-    prompt: '',
-    tag: '',
-  });
+  const promptId = searchParams.get("id");
+
+  const [post, setPost] = useState({ prompt: "", tag: "", });
+  const [submitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
+    const getPromptDetails = async () => {
+      const response = await fetch(`/api/prompt/${promptId}`);
+      const data = await response.json();
 
-  useEffect(() => {
-    if (!isClient) return;
-
-    const promptId = searchParams.get('id');
-    if (!promptId) return;
-
-    const fetchPrompt = async () => {
-      try {
-        const response = await fetch(`/api/prompt/${promptId}`);
-        const data = await response.json();
-        setPost({
-          prompt: data.prompt,
-          tag: data.tag,
-        });
-      } catch (error) {
-        console.error('Failed to fetch prompt:', error);
-      }
+      setPost({
+        prompt: data.prompt,
+        tag: data.tag,
+      });
     };
 
-    fetchPrompt();
-  }, [isClient, searchParams]);
+    if (promptId) getPromptDetails();
+  }, [promptId]);
 
   const updatePrompt = async (e) => {
     e.preventDefault();
-    setSubmitting(true);
+    setIsSubmitting(true);
 
-    const promptId = searchParams.get('id');
-    if (!promptId) {
-      alert('Prompt not found');
-      setSubmitting(false);
-      return;
-    }
+    if (!promptId) return alert("Missing PromptId!");
 
     try {
       const response = await fetch(`/api/prompt/${promptId}`, {
-        method: 'PATCH',
+        method: "PATCH",
         body: JSON.stringify({
           prompt: post.prompt,
           tag: post.tag,
@@ -60,22 +43,18 @@ const EditPrompt = () => {
       });
 
       if (response.ok) {
-        router.push('/');
+        router.push("/");
       }
     } catch (error) {
-      console.error('Failed to update prompt:', error);
+      console.log(error);
     } finally {
-      setSubmitting(false);
+      setIsSubmitting(false);
     }
   };
 
-  if (!isClient) {
-    return null; // or a loading indicator, or anything you want to show while waiting for the client to mount
-  }
-
   return (
     <Form
-      type="Update"
+      type='Edit'
       post={post}
       setPost={setPost}
       submitting={submitting}
@@ -84,4 +63,4 @@ const EditPrompt = () => {
   );
 };
 
-export default EditPrompt;
+export default UpdatePrompt;
