@@ -5,7 +5,6 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Profile from '@components/Profile';
 import React from 'react'
-import { set } from 'mongoose';
 
 const MyProfile = () => {
     const { data: session } = useSession();
