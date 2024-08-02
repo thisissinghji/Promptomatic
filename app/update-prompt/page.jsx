@@ -6,7 +6,7 @@ import Form from '@components/Form';
 const EditPrompt = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const promptId = searchParams.get('id');
+  const [isClient, setIsClient] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [post, setPost] = useState({
     prompt: '',
@@ -14,6 +14,15 @@ const EditPrompt = () => {
   });
 
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient) return;
+
+    const promptId = searchParams.get('id');
+    if (!promptId) return;
+
     const fetchPrompt = async () => {
       try {
         const response = await fetch(`/api/prompt/${promptId}`);
@@ -27,36 +36,42 @@ const EditPrompt = () => {
       }
     };
 
-    if(promptId) fetchPrompt();
-  }, [promptId]);
+    fetchPrompt();
+  }, [isClient, searchParams]);
 
-    const updatePrompt = async (e) => {
+  const updatePrompt = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    if(!promptId){
-        alert('Prompt not found'); 
-        return;
-    }
-        
-    try {
-        const response = await fetch(`/api/prompt/${promptId}`, {
-            method: 'PATCH',
-            body: JSON.stringify({
-                prompt: post.prompt,
-                tag: post.tag,
-            }),
-        });
 
-        if(response.ok){
-            router.push('/');
-        }
+    const promptId = searchParams.get('id');
+    if (!promptId) {
+      alert('Prompt not found');
+      setSubmitting(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/prompt/${promptId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          prompt: post.prompt,
+          tag: post.tag,
+        }),
+      });
+
+      if (response.ok) {
+        router.push('/');
+      }
     } catch (error) {
-        console.error('Failed to update prompt:', error);
+      console.error('Failed to update prompt:', error);
+    } finally {
+      setSubmitting(false);
     }
-    finally {
-        setSubmitting(false);
-    }
-}
+  };
+
+  if (!isClient) {
+    return null; // or a loading indicator, or anything you want to show while waiting for the client to mount
+  }
 
   return (
     <Form
