@@ -1,4 +1,21 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Wecole to Promptomatic
+### This is a platform where you can share or explore amazing prompts
+![Screenshot 2024-08-02 211717](https://github.com/user-attachments/assets/e1c16995-7855-4f3b-b73e-effdd36651db)
+
+## You get some amazing features:
+## 1. Explore outstanding prompts
+![Screenshot 2024-08-02 221526](https://github.com/user-attachments/assets/9761a4e4-b8ca-4a4d-b3fa-e786a42a7190)
+
+## 2. Create Prompt
+Create a prompt add tags and share it with the people so that they can use it or take inspiration from it
+![Screenshot 2024-08-02 222603](https://github.com/user-attachments/assets/0048b3e2-e460-4751-86b4-03f7c5116a88)
+
+## 3. Edit and Delete prompt
+You can visit your own profile and checkout all the prompts that you shared. You even get to edit and delete the prompts that you have shared with the world.
+![Screenshot 2024-08-02 222622](https://github.com/user-attachments/assets/7ff1207f-38b8-4e86-aac6-757ed1042d2d)
+![Screenshot 2024-08-02 222910](https://github.com/user-attachments/assets/77c123de-c600-4f40-bf41-75dea0cf6dbf)
+
+# Enjoy and share the best prompts with the world
 
 ## Getting Started
 
